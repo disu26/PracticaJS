@@ -6,11 +6,12 @@
             this.gameOver = false;
             this.bars = [];
             this.ball = null;
+            this.playing = false;
         }
         
     self.Board.prototype = {
         get elements(){
-            let elements = this.bars;
+            let elements = this.bars.map((bar) => bar);
             elements.push(this.ball);
             return elements;
         }
@@ -25,9 +26,17 @@
         this.speedY = 0;
         this.speedX = 3;
         this.board = board;
+        this.direction = 1;
 
         board.ball = this;
         this.kind = "circle"
+    }
+
+    self.Ball.prototype = {
+        move : function(){
+            this.x += (this.speedX * this.direction);
+            this.y += (this.speedY);
+        }
     }
 })();
 
@@ -77,8 +86,11 @@
             }
         },
         play: function(){
-            this.clean();
-            this.draw();
+            if(board.playing){
+                this.clean();
+                this.draw();
+                this.board.ball.move();
+            }
         }
     }
 
@@ -106,17 +118,25 @@ var boardView = new BoardView(canvas, board);
 var ball = new Ball(350, 100, 10, board);
 
 document.addEventListener("keydown",(ev) => {
-    ev.preventDefault();
     if(ev.key === "ArrowUp"){
+        ev.preventDefault();
         bar2.up();
     }else if(ev.key === "ArrowDown"){
+        ev.preventDefault();
         bar2.down();
     }else if(ev.key === "w"){
+        ev.preventDefault();
         bar.up();
     }else if(ev.key === "s"){
+        ev.preventDefault();
         bar.down();
+    }else if(ev.key === " "){
+        ev.preventDefault();
+        board.playing = !board.playing;
     }
 })
+
+boardView.draw();
 
 window.requestAnimationFrame(controller);
 
