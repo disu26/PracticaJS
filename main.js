@@ -1,3 +1,7 @@
+/**
+ * Función que se llama a sí misma y sirve para crear el tablero en el que 
+ * se mostrará el ping pong.
+ */
 (function(){
     self.Board = function(width, height){
             this.width = width;
@@ -18,6 +22,9 @@
     }
 })();
 
+/**
+ * Función que se llama a sí misma y sirve para crear la bola del ping pong.
+ */
 (function(){
     self.Ball = function(x, y, radius, board){
         this.x = x;
@@ -62,6 +69,9 @@
     }
 })();
 
+/**
+ * Función que se llama a sí misma y sirve para crear las barras del ping pong.
+ */
 (function(){
     self.Bar = function(x, y, width, height, board){
         this.x = x;
@@ -87,6 +97,10 @@
     }
 })();
 
+/**
+ * Funcion que se llama a sí misma y sirve para visualizar el tablero.
+ * el prototipo de esta función limpia la pantalla, dibuja los elementos y revisa las colisiones.
+ */
 (function(){
     self.BoardView = function(canvas, board){
         this.canvas = canvas;
@@ -126,6 +140,12 @@
         }
     }
 
+    /**
+     * Funcion que sirve para saber si la pelota a golpeado en una barra.
+     * @param {*} a 
+     * @param {*} b 
+     * @returns boolean
+     */
     function hit(a, b){
         let hit = false;
         //Colisiones horizontales
@@ -151,6 +171,11 @@
         return hit;
     }
 
+    /**
+     * Función que sirve para dibujar los elementos, un rectangulo o un circulo.
+     * @param {*} ctx 
+     * @param {*} element 
+     */
     function draw(ctx, element){
         switch(element.kind){
             case "rectangle":
@@ -167,13 +192,19 @@
     }
 })();
 
-var board = new Board(800, 400);
-var bar = new Bar(20, 100, 40, 100, board);
-var bar2 = new Bar(735, 100, 40, 100, board);
-var canvas = document.getElementById('canvas');
-var boardView = new BoardView(canvas, board);
-var ball = new Ball(350, 100, 10, board);
+/**
+ * Variables globales
+ */
+let board = new Board(800, 400);
+let bar = new Bar(20, 100, 40, 100, board);
+let bar2 = new Bar(735, 100, 40, 100, board);
+let canvas = document.getElementById('canvas');
+let boardView = new BoardView(canvas, board);
+let ball = new Ball(350, 100, 10, board);
 
+/**
+ * Movimiento de las barras laterales, con las flechas o w,s.
+ */
 document.addEventListener("keydown",(ev) => {
     if(ev.key === "ArrowUp"){
         ev.preventDefault();
